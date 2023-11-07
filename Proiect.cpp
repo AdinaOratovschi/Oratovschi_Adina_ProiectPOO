@@ -60,9 +60,38 @@ public:
         }
     }
 
+    Suc operator=(const Suc& suc)
+    {
+        this->nrIngrediente = suc.nrIngrediente;
+        this->pret = suc.pret;
+        if (ingrediente != NULL)
+        {
+            delete[] ingrediente;
+        }
+        ingrediente = new string[nrIngrediente];
+        for (int i = 0; i < nrIngrediente; i++)
+        {
+            ingrediente[i] = suc.ingrediente[i];
+        }
+        return *this;
+    }
+
+    bool operator>(const Suc& suc)
+    {
+        return pret > suc.pret;
+    }
+
+    bool operator<(const Suc& suc)
+    {
+        return pret < suc.pret;
+    }
+
     ~Suc()
     {
-        delete[] ingrediente;
+        if (ingrediente != NULL)
+        {
+            delete[] ingrediente;
+        }
     }
 
     void afisare()
@@ -114,6 +143,8 @@ public:
     {
         cantitate = nouaCantitate;
     }
+
+    friend ostream& operator<<(ostream& consola, const Suc& suc);
 };
 
 int Suc::cantitate = 0;
@@ -126,6 +157,17 @@ void marestePret(Suc& suc, float marire)
 void scaderePret(Suc& suc, float scadere)
 {
     suc.pret = suc.pret - scadere;
+}
+
+ostream& operator<<(ostream& consola, const Suc& suc)
+{
+    consola << endl << "Suc " << suc.nume << " are pretul de " << suc.pret << " si contine:" << endl;
+    for (int i = 0; i < suc.nrIngrediente; i++)
+    {
+        consola << suc.ingrediente[i] << endl;
+    }
+    consola << "Cantitate sucuri: " << suc.cantitate << endl;
+    return consola;
 }
 
 class Chips
@@ -177,6 +219,45 @@ public:
         for (int i = 0; i < nrIngrediente; i++)
         {
             ingrediente[i] = chipsOriginal.ingrediente[i];
+        }
+    }
+
+    Chips operator=(const Chips& chips)
+    {
+        this->nrIngrediente = chips.nrIngrediente;
+        this->calorii = chips.calorii;
+        if (ingrediente != NULL)
+        {
+            delete[] ingrediente;
+        }
+        ingrediente = new string[nrIngrediente];
+        for (int i = 0; i < nrIngrediente; i++)
+        {
+            ingrediente[i] = chips.ingrediente[i];
+        }
+        return *this;
+    }
+
+    bool operator==(const Chips& chips)
+    {
+        return this->nume == chips.nume && this->calorii == chips.calorii;
+    }
+
+    bool operator!=(const Chips& chips)
+    {
+        return this->nume!=chips.nume || this->calorii != chips.calorii;
+    }
+
+    string& operator[](int i)
+    {
+        string eroare = "Depaseste nr de ingrediente";
+        if (i < nrIngrediente)
+        {
+            return this->ingrediente[i];
+        }
+        else
+        {
+            return eroare; 
         }
     }
 
@@ -300,6 +381,45 @@ public:
         }
     }
 
+    Vanzator operator=(const Vanzator& vanzator)
+    {
+        this->totalProdVandute = vanzator.totalProdVandute;
+        this->valVanzari = vanzator.valVanzari;
+        if (produseVandute != NULL)
+        {
+            delete[] produseVandute;
+        }
+        produseVandute = new string[totalProdVandute];
+        for (int i = 0; i < totalProdVandute; i++)
+        {
+            produseVandute[i] = vanzator.produseVandute[i];
+        }
+        return *this;
+    }
+
+    bool operator==(const Vanzator& vanzator)
+    {
+        return this->nume == vanzator.nume;
+    }
+
+    bool operator!=(const Vanzator& vanzator)
+    {
+        return this->nume!= vanzator.nume;
+    }
+
+    string& operator[](int i)
+    {
+        string eroare = "Produs necunoscut.";
+        if (i < totalProdVandute)
+        {
+            return this->produseVandute[i];
+        }
+        else
+        {
+            return eroare;
+        }
+    }
+
     ~Vanzator()
     {
         delete[] produseVandute;
@@ -390,6 +510,25 @@ void main()
     {
         cout << sprite.getIngrediente()[i] << endl;
     }
+    Suc sucNou;
+    sucNou = sprite;
+    cout<<sucNou;
+    if (unSuc < altSuc)
+    {
+        cout << "unSuc < altSuc"<<endl;
+    }
+    else
+    {
+        cout << "unSuc > altSuc"<<endl;
+    }
+    if (altSuc > sprite)
+    {
+        cout << "altSuc > sprite"<<endl;
+    }
+    else
+    {
+        cout << "altSuc < sprite"<<endl;
+    }
 
     Vanzator unVanzator;
     unVanzator.afisare();
@@ -411,6 +550,27 @@ void main()
     {
         cout << altiVanzator.getProduseVandute()[i] << endl;
     }
+    Vanzator nouVanzator;
+    nouVanzator = altiVanzator;
+    nouVanzator.afisare();
+    Vanzator novice;
+    if (novice == unVanzator)
+    {
+        cout << "novice == unVanzator" << endl;
+    }
+    else
+    {
+        cout << "novice != unVanzator" << endl;
+    }
+    if (novice != unVanzator)
+    {
+        cout << "novice != unVanzator" << endl;
+    }
+    else
+    {
+        cout << "novice == unVanzator"<<endl;
+    }
+    cout << "Primul produs vandut este: " << novice[0];
 
     Chips unChips;
     unChips.afisare();
@@ -432,4 +592,18 @@ void main()
     {
         cout << alteChips.getIngrediente()[i] << endl;
     }
+    Chips nouChips;
+    nouChips = alteChips;
+    nouChips.afisare();
+    Chips unChips2;
+    if (unChips2 == unChips)
+    {
+        cout << "unChips2 == unChips"<<endl;
+    }
+    if (unChips != nouChips)
+    {
+        cout << "unChips != nouChips"<<endl;
+    }
+    cout << "Primul ingredient este: " << nouChips[0];
+    
 }
