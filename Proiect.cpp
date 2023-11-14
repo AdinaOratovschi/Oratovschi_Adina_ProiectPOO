@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 //domeniul e Aprozar
@@ -170,6 +171,31 @@ ostream& operator<<(ostream& consola, const Suc& suc)
     return consola;
 }
 
+Suc citesteSuc()
+{
+    int nrIngredienteSuc;
+    string numeSuc;
+    float pretSuc;
+    string* ingredienteSuc;
+
+    cout << "Numele sucului este: ";
+    cin >> numeSuc;
+    cout << "Pretul este: ";
+    cin >> pretSuc;
+    cout << "Introduceti numarul de ingrediente: ";
+    cin >> nrIngredienteSuc;
+    ingredienteSuc = new string[nrIngredienteSuc];
+    for (int i = 0; i < nrIngredienteSuc; i++)
+    {
+        cout << "Ingredientul " << i + 1 << " este:";
+        cin >> ingredienteSuc[i];
+    }
+
+    Suc nouSuc(numeSuc, pretSuc, ingredienteSuc, nrIngredienteSuc);
+    return nouSuc;
+}
+
+
 class Chips
 {
 private:
@@ -268,7 +294,7 @@ public:
 
     void afisare()
     {
-        cout << endl << "Chips-urile " << nume << " au un numare de " << calorii <<" calorii si contine: " << endl;
+        cout << endl << "Chips-urile " << nume << " au un numar de " << calorii <<" calorii si contine: " << endl;
         for (int i = 0; i < nrIngrediente; i++)
         {
             cout << ingrediente[i] << endl;
@@ -327,6 +353,30 @@ void maresteCalorii(Chips& chips, float marire)
 void scadereCalorii(Chips& chips, float scadere)
 {
     chips.calorii = chips.calorii - scadere;
+}
+
+Chips citesteChips()
+{
+    int nrIngredienteChips;
+    string numeChips;
+    float caloriiChips;
+    string* ingredienteChips;
+
+    cout << "Numele chipsurilor sunt: ";
+    cin >> numeChips;
+    cout << "Caloriile sunt: ";
+    cin >> caloriiChips;
+    cout << "Introduceti numarul de ingrediente: ";
+    cin >> nrIngredienteChips;
+    ingredienteChips = new string[nrIngredienteChips];
+    for (int i = 0; i < nrIngredienteChips; i++)
+    {
+        cout << "Ingredientul " << i + 1 << " este:";
+        cin >> ingredienteChips[i];
+    }
+
+    Chips nouChips(numeChips, caloriiChips, ingredienteChips, nrIngredienteChips);
+    return nouChips;
 }
 
 class Vanzator
@@ -427,7 +477,7 @@ public:
 
     void afisare()
     {
-        cout << endl << "Vanzatorul " << nume << " a avut un numare de " << valVanzari << " vanzari si anume: " << endl;
+        cout << endl << "Vanzatorul " << nume << " a avut un numar de " << valVanzari << " vanzari si anume: " << endl;
         for (int i = 0; i < totalProdVandute; i++)
         {
             cout << produseVandute[i] << endl;
@@ -486,6 +536,30 @@ void maresteValVanzari(Vanzator& vanzator, float marire)
 void scadereValVanzari(Vanzator& vanzator, float scadere)
 {
     vanzator.valVanzari = vanzator.valVanzari - scadere;
+}
+
+Vanzator citesteVanzator()
+{
+    int totalProdVanduteVanzator;
+    string numeVanzator;
+    float valVanzariVanzator;
+    string* produseVanduteVanzator;
+
+    cout << "Numele Vanzatorului este: ";
+    cin >> numeVanzator;
+    cout << "Vloarea vanzarilor este: ";
+    cin >> valVanzariVanzator;
+    cout << "Introduceti numarul de produse vandute: ";
+    cin >> totalProdVanduteVanzator;
+    produseVanduteVanzator = new string[totalProdVanduteVanzator];
+    for (int i = 0; i < totalProdVanduteVanzator; i++)
+    {
+        cout << "Produsul vandut " << i + 1 << " este:";
+        cin >> produseVanduteVanzator[i];
+    }
+
+    Vanzator nouVanzator(numeVanzator, valVanzariVanzator, produseVanduteVanzator, totalProdVanduteVanzator);
+    return nouVanzator;
 }
 
 void main()
@@ -604,6 +678,75 @@ void main()
     {
         cout << "unChips != nouChips"<<endl;
     }
-    cout << "Primul ingredient este: " << nouChips[0];
+    cout << "Primul ingredient este: " << nouChips[0]<<endl;
+
+    vector<Suc> sucuri;
+    char raspuns = 'Y';
+    do
+    {
+        Suc s = citesteSuc();
+        sucuri.push_back(s);
+
+        cout << "Doriti si alte sucuri? (y/n): ";
+        cin >> raspuns;
+        raspuns = toupper(raspuns);
+    } while (raspuns == 'Y');
+
+    cout << "Sucurile din vector sunt: ";
+    for (int i = 0; i < sucuri.size(); i++)
+    {
+        sucuri[i].afisare();
+    }
+
+    vector<Chips> chipsuri;
+    do
+    {
+        Chips c = citesteChips();
+        chipsuri.push_back(c);
+
+        cout << "Doriti si alte chipsuri? (y/n): ";
+        cin >> raspuns;
+        raspuns = toupper(raspuns);
+    } while (raspuns == 'Y');
+
+    cout << "Chipsurile din vector sunt: ";
+    for (int i = 0; i < chipsuri.size(); i++)
+    {
+        chipsuri[i].afisare();
+    }
+       
+    vector<Vanzator> vanzatori;
+    do
+    {
+        Vanzator v = citesteVanzator();
+        vanzatori.push_back(v);
+
+        cout << "Doriti sa introduceti si alti vanzatori? (y/n): ";
+        cin >> raspuns;
+        raspuns = toupper(raspuns);
+    } while (raspuns == 'Y');
+
+    cout << "Vanzatorii din vector sunt: ";
+    for (int i = 0; i < vanzatori.size(); i++)
+    {
+        vanzatori[i].afisare();
+    }
     
+    Suc prodSiSucuri[2][3] = {
+         Suc("Pepsi", 3.5, new string[3]{ "Apa", "Zahar", "Aroma" }, 3),
+         Suc("Mirinda", 3.9, new string[4]{ "Apa", "Zahar", "Lamaie", "Aroma" }, 4),
+         Suc("SevenUp", 3.9, new string[4]{ "Apa", "Zahar", "Lamaie", "Aroma" }, 4),
+         Suc("Coca-Cola", 3.9, new string[4]{ "Apa", "Zahar", "Aroma" }, 3),
+         Suc("Fanta", 3.9, new string[4]{ "Apa", "Zahar", "Portocala", "Aroma" }, 4),
+         Suc("Sprite", 3.9, new string[4]{ "Apa", "Zahar", "Lamaie", "Aroma" }, 4)
+    };
+
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            prodSiSucuri[i][j].afisare();
+        }
+    }
+
 }
