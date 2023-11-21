@@ -379,6 +379,82 @@ Chips citesteChips()
     return nouChips;
 }
 
+class Meniu
+{
+private:
+    Suc suc;
+    Chips chips;
+    float pret;
+
+public:
+
+    Meniu(Suc& suc, Chips& chips, float pret)
+    {
+        this->suc = suc;
+        this->chips = chips;
+        this->pret = pret;
+    }
+
+    Suc getSuc()
+    {
+        return suc;
+    }
+
+    void setSuc(Suc& suc)
+    {
+        this->suc = suc;
+    }
+
+    Chips getChips()
+    {
+        return chips;
+    }
+
+    void setChips(Chips& chips)
+    {
+        this->chips = chips;
+    }
+
+    float getPret()
+    {
+        return pret;
+    }
+
+    void setPret(float pret)
+    {
+        this->pret = pret;
+    }
+
+    bool operator==(const Meniu& meniu)
+    {
+        Suc s = meniu.suc;
+        if (this->suc.getNume() == s.getNume() && this->chips == meniu.chips && this->pret == meniu.pret)
+            return true;
+        else
+            return false;
+    }
+
+    bool operator!=(const Meniu& meniu)
+    {
+        Suc s = meniu.suc;
+        if (this->suc.getNume() != s.getNume() || this->chips != meniu.chips || this->pret != meniu.pret)
+            return true;
+        else
+            return false;
+    }
+
+    bool operator>(const Meniu& meniu)
+    {
+        if (this->pret > meniu.pret)
+            return true;
+        else
+            return false;
+    }
+};
+
+
+
+
 class Vanzator
 {
 private:
@@ -564,11 +640,11 @@ Vanzator citesteVanzator()
 
 void main()
 {
-    Suc unSuc;
+   Suc unSuc;
     unSuc.afisare();
     Suc altSuc("Fanta", 4.5);
     altSuc.afisare();
-    Suc sprite("Sprite", 3.9, new string[4]{ "Apa", "Zahar", "Lamaie", "Aroma" }, 4);
+    Suc sprite("Sprite", 3.9, new string[4]{"Apa", "Zahar", "Lamaie", "Aroma"}, 4);
     sprite.afisare();
     cout << endl;
     marestePret(unSuc, 0.4);
@@ -650,7 +726,7 @@ void main()
     unChips.afisare();
     Chips altChips("Chio", 601.4);
     altChips.afisare();
-    Chips alteChips("Takis", 589.9, new string[3]{ "Cartofi", "Ulei", "Faina" }, 3);
+    Chips alteChips("Takis", 589.9, new string[3]{"Cartofi", "Ulei", "Faina"}, 3);
     alteChips.afisare();
     cout << endl;
     maresteCalorii(altChips, 0.16);
@@ -747,6 +823,26 @@ void main()
         {
             prodSiSucuri[i][j].afisare();
         }
+    }
+
+    Meniu m1(unSuc, unChips, 13);
+    cout << "Meniul contine " << m1.getSuc().getNume() << " si " << m1.getChips().getNume() << " si are pretul de " << m1.getPret()<<endl;
+    Meniu m2(altSuc, altChips, 13);
+    if (m1 == m2)
+    {
+        cout << "Meniurile sunt egale" << endl;
+    }
+    else
+    {
+        cout << "Meniurile nu sunt egale" << endl;
+    }
+    if (m1 > m2)
+    {
+        cout << "m1>m2";
+    }
+    else
+    {
+        cout << "m1<=m2";
     }
 
 }
