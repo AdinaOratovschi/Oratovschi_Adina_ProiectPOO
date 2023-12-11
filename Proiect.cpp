@@ -7,8 +7,14 @@ using namespace std;
 //domeniul e Aprozar
 //clasele sunt: Suc, Chips, Vanzator
 
+class Bautura
+{
+ public:
+    int valoareAcciza = 0;
+    virtual void aplicaAcciza() = 0;
+};
 
-class Suc
+class Suc: public Bautura
 {
 private:
     int nrIngrediente;
@@ -31,6 +37,7 @@ public:
         ingrediente[2] = "Aroma";
         nrIngrediente = 3;
         cantitate++;
+        valoareAcciza = 20;
     }
 
     Suc(string numeSuc, float pretSuc) : nume(numeSuc), pret(pretSuc)
@@ -41,6 +48,7 @@ public:
         ingrediente[2] = "Aroma";
         nrIngrediente = 3;
         cantitate++;
+        valoareAcciza = 20;
     }
 
     Suc(string numeSuc, float pretSuc, string* ingredienteSuc, int totalIngrediente) : nume(numeSuc)
@@ -49,6 +57,7 @@ public:
         ingrediente = ingredienteSuc;
         nrIngrediente = totalIngrediente;
         cantitate++;
+        valoareAcciza = 20;
     }
 
     Suc(const Suc& sucOriginal): nume(sucOriginal.nume)
@@ -64,6 +73,7 @@ public:
 
     Suc operator=(const Suc& suc)
     {
+        Bautura::operator=(suc);
         this->nrIngrediente = suc.nrIngrediente;
         this->pret = suc.pret;
         if (ingrediente != NULL)
@@ -150,6 +160,13 @@ public:
 
     friend ofstream& operator<<(ofstream& fisier, const Suc& s);
     friend ifstream& operator>>(ifstream& fisier, Suc& s);
+
+    void aplicaAcciza()
+    {
+        pret = pret + (valoareAcciza * pret / 100);
+        cout << "Pretul dupa aplicarea accizei este: " << pret << endl;
+    }
+
 };
 
 int Suc::cantitate = 0;
@@ -540,10 +557,15 @@ public:
     }
 };
 
+class Angajat
+{
+public:
+    virtual void calculeazaSalariu() = 0;
+    int procentVanzari = 0;
+    int salariu = 1000;
+};
 
-
-
-class Vanzator
+class Vanzator: public Angajat
 {
 private:
     int totalProdVandute;
@@ -565,6 +587,7 @@ public:
         produseVandute[1] = "Dulciuri";
         totalProdVandute = 2;
         totalVanzariAprozar++;
+        procentVanzari = 5;
     }
 
     Vanzator(string numeVanzator, float valVanzariVanzator) : nume(numeVanzator), valVanzari(valVanzariVanzator)
@@ -574,6 +597,7 @@ public:
         produseVandute[1] = "Dulciuri";
         totalProdVandute = 2;
         totalVanzariAprozar++;
+        procentVanzari = 5;
     }
 
     Vanzator(string numeVanzator, float valVanzariVanzator, string* produseVanduteVanzator, int totalProdVanduteVanzator) : nume(numeVanzator)
@@ -582,6 +606,7 @@ public:
         produseVandute = produseVanduteVanzator;
         totalProdVandute = totalProdVanduteVanzator;
         totalVanzariAprozar++;
+        procentVanzari = 5;
     }
 
     Vanzator(const Vanzator& vanzatorOriginal) : nume(vanzatorOriginal.nume)
@@ -597,6 +622,7 @@ public:
 
     Vanzator operator=(const Vanzator& vanzator)
     {
+        Angajat::operator=(vanzator);
         this->totalProdVandute = vanzator.totalProdVandute;
         this->valVanzari = vanzator.valVanzari;
         if (produseVandute != NULL)
@@ -703,6 +729,12 @@ public:
     {
         fisier.read((char*)&this->valVanzari, sizeof(float));
         fisier.read((char*)&this->totalProdVandute, sizeof(int));
+    }
+
+    void calculeazaSalariu()
+    {
+        salariu = salariu + (getValVanzari() * procentVanzari / 100);
+        cout << nume << " are salariul de: " << salariu<<endl;
     }
 };
 
@@ -1038,4 +1070,20 @@ void main()
     cout << c1;
     c1.setNrCaseFolosite(2);
     cout << c1;
+
+    Angajat** angajati = new Angajat* [10];
+    angajati[0] = new Vanzator("Ionescu David", 500);
+    angajati[1] = new Vanzator("Popescu David", 600);
+    angajati[2] = new Vanzator("Georgescu David", 700);
+    angajati[3] = new Vanzator("Ionescu Andrei", 800); 
+    angajati[4] = new Vanzator("Ionescu Andreea", 750);
+    angajati[5] = new Vanzator("Ionescu Nina", 550);
+    angajati[6] = new Vanzator("Ionescu Alex", 300);
+    angajati[7] = new Vanzator("Mihaiescu David", 1000);
+    angajati[8] = new Casier("Davidescu David", 2000, new string[1]{ "Paine" }, 1, 1);
+    angajati[9] = new Vanzator("Gogulescu Gogu", 500);
+    for (int i = 0; i < 10; i++)
+    {
+        angajati[i]->calculeazaSalariu();
+    }
 }
